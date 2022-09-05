@@ -1,0 +1,144 @@
+package edu.iastate.cs228.hw2;
+
+import java.io.FileNotFoundException;
+import java.lang.NumberFormatException;
+import java.lang.IllegalArgumentException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.InputMismatchException;
+
+/**
+ *
+ * @author Noah Nelson
+ *
+ */
+
+/**
+ *
+ * This class implements the mergesort algorithm.
+ *
+ */
+
+public class MergeSorter extends AbstractSorter {
+	// Other private instance variables if needed
+
+	/**
+	 * Constructor takes an array of points.  It invokes the superclass constructor, and also
+	 * set the instance variables algorithm in the superclass.
+	 *
+	 * @param pts   input array of integers
+	 */
+	public MergeSorter(Point[] pts) {
+		super(pts);
+		algorithm = Algorithm.MergeSort.toString();
+	}
+
+
+	/**
+	 * Perform mergesort on the array points[] of the parent class AbstractSorter.
+	 *
+	 */
+	@Override
+	public void sort() {
+		mergeSortRec(getPoints());
+	}
+
+
+	/**
+	 * This is a recursive method that carries out mergesort on an array pts[] of points. One
+	 * way is to make copies of the two halves of pts[], recursively call mergeSort on them,
+	 * and merge the two sorted subarrays into pts[].
+	 *
+	 * @param pts	point array
+	 */
+	private void mergeSortRec(Point[] pts) {
+		int n = pts.length;
+		if (n <= 1) {
+			return;
+
+		}
+		int m = n / 2;
+		Point[] left = new Point[m];
+		for (int x = 0; x < m; x++) {
+			left[x] = pts[x];
+
+		}
+		Point[] right = new Point[(n) - m];
+
+		for (int x = m; x < n; x++) {
+			right[x - m] = pts[x];
+		}
+		mergeSortRec(left);
+		mergeSortRec(right);
+		pts = merge(left, right);
+
+
+	}
+
+	private Point[] merge(Point[] left, Point[] right) {
+		int p = left.length;
+		int q = right.length;
+		int i = 0;
+		int j = 0;
+		int arrayIndex = 0;
+		Point[] temp = new Point[p + q];
+		if (Point.xORy) {
+			while (i < p && j < q) {
+				if (left[i].getX() <= right[j].getX()) {
+					temp[arrayIndex] = left[i];
+					i++;
+					arrayIndex++;
+
+				} else {
+					temp[arrayIndex] = right[j];
+					j++;
+					arrayIndex++;
+
+				}
+			}
+			if (i >= p) {
+				for (int x = j; x < q; x++) {
+					temp[arrayIndex] = right[x];
+					arrayIndex++;
+				}
+			} else {
+				for (int x = i; x < p; x++) {
+					temp[arrayIndex] = left[x];
+					arrayIndex++;
+				}
+			}
+			return temp;
+
+		} else {
+			while (i < p && j < q) {
+				if (left[i].getY() <= right[j].getY()) {
+					temp[arrayIndex] = left[i];
+					i++;
+					arrayIndex++;
+
+				} else {
+					temp[arrayIndex] = right[j];
+					j++;
+					arrayIndex++;
+
+				}
+			}
+			if (i >= p) {
+				for (int x = j; x < q; x++) {
+					temp[arrayIndex] = right[x];
+					arrayIndex++;
+
+				}
+			} else {
+				for (int x = i; x < p; x++) {
+					temp[arrayIndex] = left[x];
+					arrayIndex++;
+
+				}
+			}
+			return temp;
+		}
+
+	}
+
+}
